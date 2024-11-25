@@ -14,6 +14,7 @@
                VerticalOptions="Fill"/>
 
         <Button Grid.Row="1"
+                x:Name="TryButton"
                 Text="Try It Out (3 Searches)"
                 HeightRequest="50"
                 WidthRequest="200"
@@ -22,6 +23,7 @@
                 HorizontalOptions="Center"/>
 
         <Button Grid.Row="2"
+                x:Name="PaidButton"
                 Text="Run Full Version (100 Searches)"
                 HeightRequest="50"
                 WidthRequest="200"
@@ -31,6 +33,7 @@
                 HorizontalOptions="Center"/>
 
         <Button Grid.Row="3"
+                x:Name="StopButton"
                 Text="Stop"
                 HeightRequest="50"
                 WidthRequest="200"

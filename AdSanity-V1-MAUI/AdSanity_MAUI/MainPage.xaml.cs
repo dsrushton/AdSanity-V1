@@ -65,14 +65,20 @@ public partial class MainPage : ContentPage
 
             // Here you would typically redirect to a payment page
             // For demo purposes, we'll assume payment is successful
+            UpdateProgress("Loading...");
             if (true) // Replace with actual payment verification
             {
+                SetSearchButtonEnabledStatus(false);
                 await RunSearches(40);
             }
         }
         catch (Exception ex)
         {
             await DisplayAlert("Error", $"Payment processing error: {ex.Message}", "OK");
+        }
+        finally
+        {
+            SetSearchButtonEnabledStatus(true);
         }
     }
 
@@ -93,7 +99,7 @@ public partial class MainPage : ContentPage
             {
                 await PerformSingleSearch();
                 UpdateProgress($"Completed search {i + 1} of {numberOfSearches}");
-                await Task.Delay(3000); // 3 second delay between searches
+                await Task.Delay(_random.Next(3000, 6000));
             }
         }
         catch (Exception ex)
@@ -115,10 +121,17 @@ public partial class MainPage : ContentPage
             var options = new ChromeOptions();
             options.AddArgument($@"--user-data-dir=C:\Users\{Environment.UserName}\AppData\Local\Google\Chrome\User Data");
             options.AddArgument("--profile-directory=Default");
-            options.AddArgument("--headless");
+            
+            // comment this line if you want to see the selenium automation visually
+            options.AddArgument("--headless=new");
+            
+            options.AddArgument("--new-window");
             options.AddArgument("--disable-notifications");
             
-            driver = new ChromeDriver(options);
+            var service = ChromeDriverService.CreateDefaultService();
+            service.HideCommandPromptWindow = true;
+            
+            driver = new ChromeDriver(service, options);
             
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
             
@@ -170,5 +183,11 @@ public partial class MainPage : ContentPage
         {
             ProgressLabel.Text = message;
         });
+    }
+
+    private void SetSearchButtonEnabledStatus(bool value)
+    {
+        TryButton.IsEnabled = value;
+        PaidButton.IsEnabled = value;
     }
 }
