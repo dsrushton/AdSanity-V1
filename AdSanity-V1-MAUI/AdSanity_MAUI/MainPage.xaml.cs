@@ -1,50 +1,37 @@
-﻿namespace AdSanity_MAUI;
+﻿using AdSanity_MAUI.StaticHelpers;
+
+namespace AdSanity_MAUI;
 
 using Microsoft.Playwright;
 using Stripe;
 
 using System.Collections.ObjectModel;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Support.UI;
+using Stripe;
+
+using System.Collections.ObjectModel;
 public partial class MainPage : ContentPage
 {
-    // Constants
     private const string STRIPE_SECRET_KEY = "your_stripe_secret_key";
     private const string PRODUCT_PRICE_ID = "your_price_id";
     private const int FREE_TRIAL_RUNS = 3;
     private const int PAID_VERSION_RUNS = 100;
-
-    // Lists to store search words
-    private List<string>? words;
-    private List<string>? words2;
-
-    // Flag to track if operation is running
+    
     private bool isRunning = false;
     private CancellationTokenSource? cancellationTokenSource;
+    private readonly Random _random = new();
 
     public MainPage()
     {
         InitializeComponent();
         SetupStripe();
-        InitializeWordLists();
     }
 
     private void SetupStripe()
     {
         StripeConfiguration.ApiKey = STRIPE_SECRET_KEY;
-    }
-
-    private void InitializeWordLists()
-    {
-        words = new List<string>
-        {
-            "Vintage", "Night Vision", "Handheld", "Tesla Coil", "UV Light",
-            // ... (rest of your words list)
-        };
-
-        words2 = new List<string>
-        {
-            "Compass", "Goggles", "Meteorite Fragment", "Geiger Counter", "Lighter",
-            // ... (rest of your words2 list)
-        };
     }
 
     private async void OnTryButtonClicked(object sender, EventArgs e)
@@ -66,21 +53,21 @@ public partial class MainPage : ContentPage
     {
         try
         {
-            var options = new PaymentIntentCreateOptions
-            {
-                Amount = 1000, // $10.00
-                Currency = "usd",
-                PaymentMethodTypes = new List<string> { "card" }
-            };
-
-            var service = new PaymentIntentService();
-            var paymentIntent = await service.CreateAsync(options);
+            // var options = new PaymentIntentCreateOptions
+            // {
+            //     Amount = 1000, // $10.00
+            //     Currency = "usd",
+            //     PaymentMethodTypes = new List<string> { "card" }
+            // };
+            //
+            // var service = new PaymentIntentService();
+            // var paymentIntent = await service.CreateAsync(options);
 
             // Here you would typically redirect to a payment page
             // For demo purposes, we'll assume payment is successful
             if (true) // Replace with actual payment verification
             {
-                await RunSearches(PAID_VERSION_RUNS);
+                await RunSearches(40);
             }
         }
         catch (Exception ex)
@@ -122,40 +109,51 @@ public partial class MainPage : ContentPage
 
     private async Task PerformSingleSearch()
     {
+        IWebDriver? driver = null;
         try
         {
-            using var playwright = await Playwright.CreateAsync();
-            await using var browser = await playwright.Chromium.LaunchAsync(new()
-            {
-                Headless = false,
-            });
-
-            var context = await browser.NewContextAsync();
-            var page = await context.NewPageAsync();
+            var options = new ChromeOptions();
+            options.AddArgument($@"--user-data-dir=C:\Users\{Environment.UserName}\AppData\Local\Google\Chrome\User Data");
+            options.AddArgument("--profile-directory=Default");
+            options.AddArgument("--headless");
+            options.AddArgument("--disable-notifications");
+            
+            driver = new ChromeDriver(options);
+            
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+            
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
 
             string searchQuery = GenerateSearchQuery();
-            await page.GotoAsync("https://www.google.com");
-            await page.WaitForLoadStateAsync();
-
-            await page.FillAsync("[name=q]", searchQuery);
-            await page.PressAsync("[name=q]", "Enter");
-
-            await page.WaitForSelectorAsync("h3");
-            await page.ClickAsync("h3");
+            await driver.Navigate().GoToUrlAsync("https://www.google.com");
             
-            await Task.Delay(5000);
+            IWebElement searchBox = wait.Until(d => d.FindElement(By.Name("q")));
+            searchBox.SendKeys(searchQuery);
+            searchBox.SendKeys(Keys.Enter);
+            
+            IWebElement firstResult = wait.Until(d => d.FindElement(By.CssSelector("h3")));
+            firstResult.Click();
+
+            await Task.Delay(_random.Next(3000, 5000));
         }
         catch (Exception ex)
         {
             await DisplayAlert("Error", $"Error during search operation: {ex.Message}", "OK");
         }
+        finally
+        {
+            if (driver != null)
+            {
+                driver.Quit();
+                driver.Dispose();
+            }
+        }
     }
 
     private string GenerateSearchQuery()
     {
-        Random rand = new Random();
-        string word1 = words[rand.Next(words.Count)];
-        string word2 = words2[rand.Next(words2.Count)];
+        string word1 = WordLists.DefaultWords1[_random.Next(WordLists.DefaultWords1.Count)];
+        string word2 = WordLists.DefaultWords2[_random.Next(WordLists.DefaultWords2.Count)];
         return $"{word1} {word2}";
     }
 
