@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AdSanity_MAUI.MainPage">
+
+    <Grid RowDefinitions="*,Auto,Auto,Auto,Auto,*" 
+          Padding="20"
+          RowSpacing="20">
+        
+        <Image Grid.Row="0"
+               Source="background.jpg"
+               Aspect="AspectFill"
+               HorizontalOptions="Fill"
+               VerticalOptions="Fill"/>
+
+        <Button Grid.Row="1"
+                x:Name="TryButton"
+                Text="Try It Out (3 Searches)"
+                HeightRequest="50"
+                WidthRequest="200"
+                BackgroundColor="LightBlue"
+                Clicked="OnTryButtonClicked"
+                HorizontalOptions="Center"/>
+
+        <Button Grid.Row="2"
+                x:Name="PaidButton"
+                Text="Run Full Version (100 Searches)"
+                HeightRequest="50"
+                WidthRequest="200"
+                BackgroundColor="Green"
+                TextColor="White"
+                Clicked="OnPaidButtonClicked"
+                HorizontalOptions="Center"/>
+
+        <Button Grid.Row="3"
+                x:Name="StopButton"
+                Text="Stop"
+                HeightRequest="50"
+                WidthRequest="200"
+                BackgroundColor="Red"
+                TextColor="White"
+                Clicked="OnStopButtonClicked"
+                HorizontalOptions="Center"/>
+
+        <Label Grid.Row="4"
+               x:Name="ProgressLabel"
+               HorizontalOptions="Center"
+               VerticalOptions="Center"/>
+    </Grid>
+
+</ContentPage>
