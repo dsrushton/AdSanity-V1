@@ -55,4 +55,6 @@ public static class WordLists
         "Shaver", "Scooter", "Cooler", "Compressor", "Chair",
         "Tripod", "Blanket", "Thermostat"
     ];
+
+    public static List<string> WordsSoccer = ["soccer", "ball"];
 }
