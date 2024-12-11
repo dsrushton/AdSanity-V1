@@ -163,6 +163,7 @@ public partial class MainPage : ContentPage
                         href_lower.Contains("walmart") ||
                         href_lower.Contains("etsy") ||
                         href_lower.Contains("aliexpress") ||
+                        href_lower.Contains("ebay") ||
                         href_lower.Contains("reddit"))
                     {
                         continue;
