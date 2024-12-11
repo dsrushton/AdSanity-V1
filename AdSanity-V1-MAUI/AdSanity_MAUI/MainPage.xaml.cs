@@ -4,14 +4,10 @@ namespace AdSanity_MAUI;
 
 using Microsoft.Playwright;
 using Stripe;
-
 using System.Collections.ObjectModel;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
-using Stripe;
-
-using System.Collections.ObjectModel;
 public partial class MainPage : ContentPage
 {
     private const string STRIPE_SECRET_KEY = "your_stripe_secret_key";
@@ -115,7 +111,7 @@ public partial class MainPage : ContentPage
 
     private async Task PerformSingleSearch()
     {
-        IWebDriver driver = null;
+        IWebDriver? driver = null;
         try
         {
             var options = new ChromeOptions();
@@ -176,11 +172,22 @@ public partial class MainPage : ContentPage
                 }
                 catch (Exception ex)
                 {
-                    // If there's an error with this result, try the next one
+                    // Log the exception details for debugging
+                    Console.WriteLine($"Error processing search result: {ex.Message}");
+                    Console.WriteLine(ex.StackTrace);
                     continue;
                 }
             }
         }
+        finally
+        {
+            if (driver != null)
+            {
+                driver.Quit();
+                driver.Dispose();
+            }
+        }
+    }
 
     private string GenerateSearchQuery()
     {
