@@ -4,6 +4,7 @@
              x:Class="AdSanity_MAUI.MainPage">
 
     <AbsoluteLayout>
+        
         <Image Source="background.jpg"
                Aspect="AspectFill"
                AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
