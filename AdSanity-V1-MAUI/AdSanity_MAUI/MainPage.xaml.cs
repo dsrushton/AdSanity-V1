@@ -12,12 +12,13 @@ public partial class MainPage : ContentPage
 {
     private const string STRIPE_SECRET_KEY = "your_stripe_secret_key";
     private const string PRODUCT_PRICE_ID = "your_price_id";
-    private const int FREE_TRIAL_RUNS = 3;
+    private const int FREE_TRIAL_RUNS = 20;
     private const int PAID_VERSION_RUNS = 100;
     
     private bool isRunning = false;
     private CancellationTokenSource? cancellationTokenSource;
     private readonly Random _random = new();
+    private IWebDriver? _driver;
 
     public MainPage()
     {
@@ -91,11 +92,13 @@ public partial class MainPage : ContentPage
 
         try
         {
+            InitializeChrome();
+            
             for (int i = 0; i < numberOfSearches && !cancellationTokenSource.Token.IsCancellationRequested; i++)
             {
                 await PerformSingleSearch();
                 UpdateProgress($"Completed search {i + 1} of {numberOfSearches}");
-                await Task.Delay(_random.Next(3000, 6000));
+                await Task.Delay(750);
             }
         }
         catch (Exception ex)
@@ -104,41 +107,53 @@ public partial class MainPage : ContentPage
         }
         finally
         {
+            if (_driver != null)
+            {
+                _driver.Quit();
+                _driver.Dispose();
+                _driver = null;
+            }
             isRunning = false;
             UpdateProgress("Operation completed");
         }
     }
 
+    private void InitializeChrome()
+    {
+        var options = new ChromeOptions();
+        options.AddArgument($@"--user-data-dir=C:\Users\{Environment.UserName}\AppData\Local\Google\Chrome\User Data");
+        options.AddArgument("--profile-directory=Default");
+        options.AddArgument("--new-window");
+        options.AddArgument("--no-sandbox");
+        options.AddArgument("--disable-dev-shm-usage");
+        
+        options.AddArgument("--disable-blink-features=AutomationControlled");
+        options.AddExcludedArgument("enable-automation");
+        options.AddAdditionalOption("useAutomationExtension", false);
+
+        var service = ChromeDriverService.CreateDefaultService();
+        service.HideCommandPromptWindow = true;
+
+        _driver = new ChromeDriver(service, options);
+    }
+
     private async Task PerformSingleSearch()
     {
-        IWebDriver? driver = null;
         try
         {
-            var options = new ChromeOptions();
-
-            // Login Issue Here
-            options.AddArgument($@"--user-data-dir=C:\Users\{Environment.UserName}\AppData\Local\Google\Chrome\User Data");
-            options.AddArgument("--profile-directory=Default");
-            options.AddArgument("--new-window");
-            options.AddArgument("--no-sandbox");
-            options.AddArgument("--disable-dev-shm-usage");
-            // options.AddArgument("--remote-debugging-port=0");
-
-            var service = ChromeDriverService.CreateDefaultService();
-            service.HideCommandPromptWindow = true;
-
-            driver = new ChromeDriver(service, options);
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            if (_driver == null) return;
+            
+            WebDriverWait wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
 
             string searchQuery = GenerateSearchQuery();
-            driver.Navigate().GoToUrl("https://www.google.com");
-            await Task.Delay(500);
+            _driver.Navigate().GoToUrl("https://www.google.com");
+            await Task.Delay(250);
 
             var searchBox = wait.Until(e => e.FindElement(By.Name("q")));
             searchBox.SendKeys(searchQuery + OpenQA.Selenium.Keys.Return);
 
             // Wait for search results
-            await Task.Delay(500);
+            await Task.Delay(300);
 
             // Find all search result links
             var searchResults = wait.Until(e => e.FindElements(By.CssSelector("div.g")));
@@ -160,6 +175,7 @@ public partial class MainPage : ContentPage
                         href_lower.Contains("etsy") ||
                         href_lower.Contains("aliexpress") ||
                         href_lower.Contains("ebay") ||
+                        href_lower.Contains("youtube") ||
                         href_lower.Contains("reddit"))
                     {
                         continue;
@@ -167,7 +183,7 @@ public partial class MainPage : ContentPage
 
                     // Found a non-Amazon link, click it
                     link.Click();
-                    await Task.Delay(2000);
+                    await Task.Delay(500);
                     break;
                 }
                 catch (Exception ex)
@@ -179,13 +195,10 @@ public partial class MainPage : ContentPage
                 }
             }
         }
-        finally
+        catch (Exception ex)
         {
-            if (driver != null)
-            {
-                driver.Quit();
-                driver.Dispose();
-            }
+            Console.WriteLine($"Error processing search: {ex.Message}");
+            Console.WriteLine(ex.StackTrace);
         }
     }
 
@@ -199,6 +212,12 @@ public partial class MainPage : ContentPage
     private void StopOperation()
     {
         cancellationTokenSource?.Cancel();
+        if (_driver != null)
+        {
+            _driver.Quit();
+            _driver.Dispose();
+            _driver = null;
+        }
         isRunning = false;
         UpdateProgress("Operation stopped by user");
     }
