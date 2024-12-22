@@ -1,4 +1,5 @@
-﻿using AdSanity_MAUI.StaticHelpers;
+﻿using AdSanity_MAUI.Models;
+using AdSanity_MAUI.StaticHelpers;
 
 namespace AdSanity_MAUI;
 
@@ -19,16 +20,26 @@ public partial class MainPage : ContentPage
     private CancellationTokenSource? cancellationTokenSource;
     private readonly Random _random = new();
     private IWebDriver? _driver;
+    private readonly WordGenService _wordGenService;
+    private readonly CategoriesService _categoriesService;
 
     public MainPage()
     {
         InitializeComponent();
-        SetupStripe();
+        _categoriesService = new CategoriesService();
+        _wordGenService = new WordGenService();
+        BindingContext = this;
     }
 
-    private void SetupStripe()
+    private void OnCategorySelected(object sender, EventArgs e)
     {
-        StripeConfiguration.ApiKey = STRIPE_SECRET_KEY;
+        var picker = (Picker)sender;
+        if (picker.SelectedItem is not Category selectedCategory) return;
+        
+        var index = selectedCategory.CategoryIndex;
+        _categoriesService.SetCurrentCategory((SearchTopic)index);
+        _wordGenService.SetWords((SearchTopic)index);
+        _wordGenService.UpdateWords((SearchTopic)_categoriesService.GetCurrentCategory().CategoryIndex);
     }
 
     private async void OnTryButtonClicked(object sender, EventArgs e)

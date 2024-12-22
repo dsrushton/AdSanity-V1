@@ -2,6 +2,8 @@
 
 public static class WordLists
 {
+    #region Default Words
+
     public static List<string> DefaultWords1 =
     [
         "Vintage", "Night Vision", "Handheld", "Tesla Coil", "UV Light",
@@ -56,5 +58,338 @@ public static class WordLists
         "Tripod", "Blanket", "Thermostat"
     ];
 
-    public static List<string> WordsSoccer = ["soccer", "ball"];
+    #endregion
+
+    #region TopicWords
+
+    public static List<string> BooksAndLearningFirstWords = 
+    [
+        "Library",
+        "Chapter",
+        "Pen",
+        "Story",
+        "Notebook",
+        "Lesson",
+        "Page",
+        "Author",
+        "Bookmark",
+        "Dictionary",
+        "Novel",
+        "Textbook",
+        "Journal",
+        "Literacy",
+        "Paragraph"
+    ];
+    
+    public static List<string> BooksAndLearningSecondWords = 
+    [
+    
+        "Reading",
+        "Writing",
+        "Knowledge",
+        "Education",
+        "Studying",
+        "Comprehension",
+        "Creativity",
+        "Vocabulary",
+        "Essay",
+        "Homework",
+        "Analysis",
+        "Research",
+        "Discussion",
+        "Debate",
+        "Exploration"
+    ];
+    
+    public static List<string> OutdoorAndAdventureFirstWords = new List<string>
+    {
+        "Mountain",
+        "Trail",
+        "Forest",
+        "River",
+        "Campsite",
+        "Backpack",
+        "Tent",
+        "Summit",
+        "Cliff",
+        "Compass",
+        "Path",
+        "Hike",
+        "Lantern",
+        "Rope",
+        "Valley",
+        "Cave",
+        "Map",
+        "Boots",
+        "Adventure",
+        "Nature",
+        "Waterfall",
+        "Sunset",
+        "Wildlife",
+        "Canoe",
+        "Peak"
+    };
+
+    public static List<string> OutdoorAndAdventureSecondWords = new List<string>
+    {
+        "Exploration",
+        "Survival",
+        "Climbing",
+        "Hiking",
+        "Camping",
+        "Fishing",
+        "Kayaking",
+        "Navigation",
+        "Adventure",
+        "Discovery",
+        "Wilderness",
+        "Journey",
+        "Trekking",
+        "Expedition",
+        "Stargazing",
+        "Exploring",
+        "Rafting",
+        "Relaxation",
+        "Photography",
+        "Escape",
+        "Thrills",
+        "Challenges",
+        "Excitement",
+        "Freedom",
+        "Outdoors"
+    };
+    
+    public static List<string> TechnologyFirstWords = new List<string>
+    {
+        "Computer",
+        "Smartphone",
+        "Internet",
+        "Processor",
+        "Device",
+        "Screen",
+        "Network",
+        "Software",
+        "Hardware",
+        "Database",
+        "Keyboard",
+        "Mouse",
+        "Cloud",
+        "Robot",
+        "Circuit",
+        "Algorithm",
+        "Application",
+        "Server",
+        "Machine",
+        "Cable",
+        "Battery",
+        "Sensor",
+        "AI",
+        "Chip",
+        "Console"
+    };
+
+    public static List<string> TechnologySecondWords = new List<string>
+    {
+        "Innovation",
+        "Coding",
+        "Programming",
+        "Engineering",
+        "Development",
+        "Automation",
+        "Efficiency",
+        "Connectivity",
+        "Intelligence",
+        "Optimization",
+        "Security",
+        "Performance",
+        "Design",
+        "Integration",
+        "Learning",
+        "Processing",
+        "Storage",
+        "Communication",
+        "Simulation",
+        "Networking",
+        "Power",
+        "Data",
+        "Analysis",
+        "Reliability",
+        "Speed"
+    };
+
+    public static List<string> HomeAndLivingFirstWords = new List<string>
+    {
+        "Kitchen",
+        "Bedroom",
+        "Living Room",
+        "Bathroom",
+        "Garden",
+        "Balcony",
+        "Closet",
+        "Dining Table",
+        "Sofa",
+        "Bookshelf",
+        "Carpet",
+        "Lamp",
+        "Chair",
+        "Cushion",
+        "Curtains",
+        "Mirror",
+        "Floor",
+        "Wall",
+        "Window",
+        "Garage",
+        "Pantry",
+        "Laundry",
+        "Patio",
+        "Ceiling",
+        "Staircase"
+    };
+
+    public static List<string> HomeAndLivingSecondWords = new List<string>
+    {
+        "Comfort",
+        "Decor",
+        "Organization",
+        "Cleaning",
+        "Cooking",
+        "Relaxation",
+        "Lighting",
+        "Furniture",
+        "Renovation",
+        "Storage",
+        "Style",
+        "Ambience",
+        "Design",
+        "Warmth",
+        "Functionality",
+        "Space",
+        "Arrangement",
+        "Accessories",
+        "Appliances",
+        "Hobbies",
+        "Aesthetics",
+        "Maintenance",
+        "Family",
+        "Shelter",
+        "Simplicity"
+    };
+
+    public static List<string> SportsAndFitnessFirstWords = new List<string>
+    {
+        "Soccer",
+        "Basketball",
+        "Tennis",
+        "Baseball",
+        "Hockey",
+        "Running",
+        "Cycling",
+        "Swimming",
+        "Gym",
+        "Workout",
+        "Yoga",
+        "Training",
+        "Field",
+        "Court",
+        "Track",
+        "Stadium",
+        "Player",
+        "Coach",
+        "Team",
+        "Ball",
+        "Racket",
+        "Gloves",
+        "Helmet",
+        "Goal",
+        "Whistle"
+    };
+
+    public static List<string> SportsAndFitnessSecondWords = new List<string>
+    {
+        "Endurance",
+        "Strength",
+        "Agility",
+        "Performance",
+        "Technique",
+        "Discipline",
+        "Speed",
+        "Flexibility",
+        "Coordination",
+        "Practice",
+        "Competition",
+        "Strategy",
+        "Focus",
+        "Stamina",
+        "Recovery",
+        "Energy",
+        "Power",
+        "Balance",
+        "Fitness",
+        "Motivation",
+        "Victory",
+        "Teamwork",
+        "Health",
+        "Determination",
+        "Achievement"
+    };
+
+    public static List<string> ArtsAndCraftsFirstWords = new List<string>
+    {
+        "Painting",
+        "Drawing",
+        "Sculpture",
+        "Canvas",
+        "Easel",
+        "Brush",
+        "Palette",
+        "Clay",
+        "Paper",
+        "Fabric",
+        "Thread",
+        "Needle",
+        "Knitting",
+        "Woodworking",
+        "Origami",
+        "Collage",
+        "Stencil",
+        "Marker",
+        "Charcoal",
+        "Ink",
+        "Glue",
+        "Ribbon",
+        "Beads",
+        "Crayons",
+        "Sketch"
+    };
+
+    public static List<string> ArtsAndCraftsSecondWords = new List<string>
+    {
+        "Creativity",
+        "Design",
+        "Expression",
+        "Craftsmanship",
+        "Inspiration",
+        "Texture",
+        "Color",
+        "Pattern",
+        "Detail",
+        "Style",
+        "Technique",
+        "Decoration",
+        "Composition",
+        "Symmetry",
+        "Artistry",
+        "Embroidery",
+        "Mosaic",
+        "Precision",
+        "Imagination",
+        "Hobby",
+        "Innovation",
+        "Aesthetics",
+        "Balance",
+        "Depth",
+        "Layering"
+    };
+
+    #endregion
 }

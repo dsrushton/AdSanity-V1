@@ -9,6 +9,28 @@
                Aspect="AspectFill"
                AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
                AbsoluteLayout.LayoutFlags="All" />
+        
+        <VerticalStackLayout 
+                Spacing="10" 
+                Padding="20"
+                AbsoluteLayout.LayoutBounds="0.5, 0.1, AutoSize, AutoSize"
+                AbsoluteLayout.LayoutFlags="PositionProportional">
+                <Label 
+                        Text="Select a Category"
+                        FontSize="18"
+                        FontAttributes="Bold"
+                        TextColor="White"
+                        Margin="0,0,0,10"/>
+    
+                <Picker
+                        Title="Choose a category"
+                        ItemsSource="{Binding Categories}" 
+                        SelectedItem="{Binding SelectedCategory, Mode=TwoWay}" 
+                        ItemDisplayBinding="{Binding Name}"
+                        SelectedIndexChanged="OnCategorySelected"
+                        BackgroundColor="White"
+                        Margin="0,0,0,20"/>
+        </VerticalStackLayout>
 
         <StackLayout AbsoluteLayout.LayoutBounds="0.5, 0.5, AutoSize, AutoSize"
                      AbsoluteLayout.LayoutFlags="PositionProportional">

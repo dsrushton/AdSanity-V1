@@ -2,13 +2,18 @@
 
 public partial class App
 {
-    public App()
+    private readonly IServiceProvider _serviceProvider;
+
+    public App(IServiceProvider serviceProvider)
     {
         InitializeComponent();
+        _serviceProvider = serviceProvider;
     }
 
     protected override Window CreateWindow(IActivationState? activationState)
     {
-        return new Window(new MainPage());
+        // Resolve MainPage with injected dependencies
+        var mainPage = _serviceProvider.GetRequiredService<MainPage>();
+        return new Window(mainPage);
     }
 }
